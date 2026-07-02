@@ -1,0 +1,13 @@
+replicaCount: 3
+
+gateway:
+  image: "ai_platform_kubernetes-api-gateway:latest"
+  port: 3000
+
+router:
+  image: "ai_platform_kubernetes-router-service:latest"
+  port: 3000
+
+proxy:
+  image: "ai_platform_kubernetes-llm-proxy:latest"
+  port: 3000

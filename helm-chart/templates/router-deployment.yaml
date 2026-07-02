@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: router
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: router
+  template:
+    metadata:
+      labels:
+        app: router
+    spec:
+      containers:
+      - name: router
+        image: {{ .Values.router.image }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: {{ .Values.router.port }}
+        env:
+        - name: REDIS_URL
+          value: "redis://my-redis-master:6379/0" # Points to the Bitnami Redis we just deployed
+        - name: ROUTER_URL
+          value: "http://router-service:3000"
