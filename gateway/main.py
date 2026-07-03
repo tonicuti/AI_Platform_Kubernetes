@@ -9,6 +9,7 @@ import httpx
 from datetime import datetime
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+from prometheus_fastapi_instrumentator import Instrumentator
 
 # Configure basic logging
 logging.basicConfig(level=logging.INFO)
@@ -84,3 +85,17 @@ async def health_check():
             "llm_proxy": proxy_status
         }
     }
+    
+    
+# --- Observability Setup ---
+# This automatically wraps your FastAPI app and creates a /metrics endpoint.
+Instrumentator().instrument(app).expose(app)
+
+@app.get("/")
+def health_check():
+    return {"status": "healthy"}
+
+@app.get("/route-traffic")
+def route_traffic():
+    # Your routing logic here
+    return {"message": "Traffic routed successfully!"}

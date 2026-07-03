@@ -11,10 +11,14 @@ spec:
     metadata:
       labels:
         app: proxy
+      annotations:
+        prometheus.io/scrape: "{{ .Values.observability.prometheus.scrape }}"
+        prometheus.io/path: "{{ .Values.observability.prometheus.path }}"
+        prometheus.io/port: "{{ .Values.proxy.port }}"
     spec:
       containers:
       - name: proxy
-        image: {{ .Values.proxy.image }}
+        image: "{{ .Values.proxy.image }}"
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: {{ .Values.proxy.port }}
@@ -23,3 +27,9 @@ spec:
           value: "redis://my-redis-master:6379/0" # Points to the Bitnami Redis we just deployed
         - name: ROUTER_URL
           value: "http://router-service:3000"
+        - name: LANGFUSE_HOST
+          value: "{{ .Values.observability.langfuse.host }}"
+        - name: LANGFUSE_PUBLIC_KEY
+          value: "{{ .Values.observability.langfuse.publicKey }}"
+        - name: LANGFUSE_SECRET_KEY
+          value: "{{ .Values.observability.langfuse.secretKey }}"

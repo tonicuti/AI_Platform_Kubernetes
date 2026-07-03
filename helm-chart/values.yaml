@@ -1,5 +1,22 @@
+# Default number of pods per service
 replicaCount: 3
 
+# --- Observability Configuration ---
+observability:
+  # Prometheus / Grafana Settings
+  prometheus:
+    scrape: true
+    path: "/metrics"
+  
+  # Langfuse AI Tracing Settings
+  # Note: For local dev, putting keys here is fine. 
+  # In production, these should be moved to Kubernetes Secrets.
+  langfuse:
+    host: "https://cloud.langfuse.com"
+    publicKey: "pk-lf-57b7a93f-725b-4e21-af02-3fbec213fd4d"
+    secretKey: "sk-lf-a9f2a232-bcbf-435b-9df1-d45fedda481b"
+
+# --- Microservices ---
 gateway:
   image: "ai_platform_kubernetes-api-gateway:latest"
   port: 3000

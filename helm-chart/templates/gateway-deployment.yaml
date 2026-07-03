@@ -11,10 +11,14 @@ spec:
     metadata:
       labels:
         app: api-gateway
+      annotations:
+        prometheus.io/scrape: "{{ .Values.observability.prometheus.scrape }}"
+        prometheus.io/path: "{{ .Values.observability.prometheus.path }}"
+        prometheus.io/port: "{{ .Values.gateway.port }}"
     spec:
       containers:
       - name: api-gateway
-        image: {{ .Values.gateway.image }}
+        image: "{{ .Values.gateway.image }}"
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: {{ .Values.gateway.port }}
